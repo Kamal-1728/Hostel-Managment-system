@@ -36,7 +36,11 @@ export default function Lostnfound() {
   const [lostnfound, setlostnfound] = useState([]);
   // get all list of current couriers when page is loaded
   document.onreadystatechange = async function () {
-    Lostnfound = (await fetch("https://hostel-management-system-2l8c.onrender.com/lostnfound")).json();
+    Lostnfound = (
+      await fetch(
+        "https://hostel-management-system-2l8c.onrender.com/lostnfound"
+      )
+    ).json();
 
     Lostnfound.then(async (data) => {
       // console.log(data);
@@ -114,13 +118,16 @@ export default function Lostnfound() {
   const Adding = async (Newitem) => {
     // console.log("Adding");
     // console.log(Newitem);
-    const res = await fetch("https://hostel-management-system-2l8c.onrender.com/lostnfound", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(Newitem),
-    });
+    const res = await fetch(
+      "https://hostel-management-system-2l8c.onrender.com/lostnfound",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(Newitem),
+      }
+    );
 
     const data = await res.json();
     // console.log("Pp");
@@ -202,6 +209,7 @@ export default function Lostnfound() {
                 label="Item Name"
                 variant="filled"
                 value={itemname}
+                inputProps={{ maxLength: 100, minLength: 4 }}
                 size="small"
                 onChange={(e) => setName(e.target.value)}
               />
@@ -212,6 +220,7 @@ export default function Lostnfound() {
                 label="Student ID"
                 variant="filled"
                 value={studentid}
+                inputProps={{ maxLength: 100, minLength: 4 }}
                 size="small"
                 onChange={(e) => setStudentid(e.target.value)}
               />
@@ -221,6 +230,7 @@ export default function Lostnfound() {
                 id="outlined-basic"
                 label="Student Contact"
                 variant="filled"
+                inputProps={{ maxLength: 20, minLength: 4 }}
                 value={contact}
                 size="small"
                 onChange={(e) => setContact(e.target.value)}
@@ -231,6 +241,7 @@ export default function Lostnfound() {
                 id="outlined-basic"
                 label="Item Description"
                 variant="filled"
+                inputProps={{ maxLength: 100, minLength: 4 }}
                 value={description}
                 size="small"
                 onChange={(e) => setDescription(e.target.value)}
@@ -292,7 +303,7 @@ export default function Lostnfound() {
                   </tr>
                 </thead>
                 <tbody>
-                  {(lostnfound.reverse()).map((data, index) => {
+                  {lostnfound.reverse().map((data, index) => {
                     return (
                       <tr key={index} className="lostnfound_data_entry">
                         <td>{index + 1}</td>

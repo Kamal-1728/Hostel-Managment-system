@@ -44,6 +44,8 @@ export default function LoginPage() {
   // no sign up page, we will only have sign in page that collect email, password and role
   const login = async (user) => {
     // console.log("login");
+    // check if password is strong enough
+
     const res = await fetch(
       "https://hostel-management-system-2l8c.onrender.com/login",
       {
@@ -90,6 +92,36 @@ export default function LoginPage() {
 
   const changePassword = async () => {
     // console.log("change password");
+    const pw = Newpassword;
+    console.log(pw);
+    var lowerCaseLetters = /[a-z]/g;
+    if (!pw.match(lowerCaseLetters)) {
+      window.alert("Password must contain a lowercase letter");
+      return;
+    }
+
+    var upperCaseLetters = /[A-Z]/g;
+    if (!pw.match(upperCaseLetters)) {
+      console.log(pw);
+      window.alert("Password must contain an uppercase letter");
+      return;
+    }
+    var numbers = /[0-9]/g;
+    if (!pw.match(numbers)) {
+      window.alert("Password must contain a number");
+      return;
+    }
+    if (pw.length < 8) {
+      window.alert("Password must be at least 8 characters long");
+      return;
+    }
+
+    // check special characters
+    var special = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g;
+    if (!pw.match(special)) {
+      window.alert("Password must contain a special character");
+      return;
+    }
     const res = await fetch(
       "https://hostel-management-system-2l8c.onrender.com/login",
       {
