@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -66,7 +65,6 @@ const Complaints = () => {
   let message = "";
   let creator = "";
 
-  const [alert, setAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
   const [edit, setEdit] = useState(false);
@@ -144,7 +142,7 @@ const Complaints = () => {
     if (reason === "clickaway") {
       return;
     }
-    setAlert(false);
+    // setAlert(false);
   };
 
   const handleDelete = (id) => {
@@ -215,40 +213,64 @@ const Complaints = () => {
       creator: creator,
     };
 
-    // if (!newComplaint.title || !newComplaint.message || !newComplaint.creator) {
-    //   alert("Please fill all the fields");
-    //   return;
-    // }
-    const post = await fetch(
-      "https://hostel-management-system-2l8c.onrender.com/complaints",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newComplaint),
-      }
-    );
-    console.log(complaints);
+    if (!newComplaint.title || !newComplaint.message || !newComplaint.creator) {
+      alert("Please fill all the fields");
+      return;
+    }
+    // min 3 char
+    else if (newComplaint.title.length < 3) {
+      console.log(newComplaint.title.length);
+      alert("Title must be atleast 3 characters long");
+      console.log(newComplaint.title.length);
+      console.log(newComplaint.message.length);
 
-    setComplaints([...complaints, newComplaint]);
+      console.log(newComplaint.creator.length);
 
-    // axios
-    //   .post("http://localhost:5000/complaints", newComplaint)
-    setOpen(false);
-    setAlertMessage("Complaint added successfully");
-    setAlertType("success");
-    setAlert(true);
-    // axios
-    //   .get("https://hostel-management-system-2l8c.onrender.com/complaints")
-    //   .then((res) => {
-    //     setComplaints(res.data);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-    setComplaints([...complaints, newComplaint]);
-    console.log(complaints);
+      return;
+    }
+    // min 10 char
+    else if (newComplaint.message.length < 10) {
+      alert("Message must be atleast 10 characters long");
+      console.log(newComplaint.message.length);
+      return;
+    }
+    // min 3 char
+    else if (newComplaint.creator.length < 3) {
+      alert("Creator must be atleast 3 characters long");
+      console.log(newComplaint.creator.length);
+      return;
+    } else {
+      const post = await fetch(
+        "https://hostel-management-system-2l8c.onrender.com/complaints",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newComplaint),
+        }
+      );
+      console.log(complaints);
+
+      setComplaints([...complaints, newComplaint]);
+
+      // axios
+      //   .post("http://localhost:5000/complaints", newComplaint)
+      setOpen(false);
+      setAlertMessage("Complaint added successfully");
+      setAlertType("success");
+      // setAlert(true);
+      // axios
+      //   .get("https://hostel-management-system-2l8c.onrender.com/complaints")
+      //   .then((res) => {
+      //     setComplaints(res.data);
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
+      setComplaints([...complaints, newComplaint]);
+      console.log(complaints);
+    }
   };
 
   const callup = () => {

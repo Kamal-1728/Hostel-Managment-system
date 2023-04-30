@@ -105,7 +105,21 @@ function NoticeBoard() {
       alert("Please fill all the fields");
       return;
     }
-    if (!editing) {
+    // min length validation
+    else if (Heading.length < 3) {
+      alert("Heading must be at least 10 characters long");
+      return;
+    }
+    // min length validation
+    else if (content.length < 10) {
+      alert("content must be at least 10 characters long");
+      return;
+    }
+    // min length validation
+    else if (writer.length < 5) {
+      alert("writer must be at least 10 characters long");
+      return;
+    } else {
       const newExamples = [...examples];
       // newNotice.id = newExamples.length + 1;
       newNotice.createdAt = new Date();
@@ -114,32 +128,15 @@ function NoticeBoard() {
       newNotice.writer = writer;
       newExamples.push(newNotice);
       setExamples(newExamples);
-    }
 
-    console.log(newNotice, "newNotice");
-    // check if min length is 10
-    if (newNotice.content.length < 6) {
-      alert("Content should be atleast 6 characters long");
-      return;
-    }
-    // check if max length is 100
+      console.log(newNotice, "newNotice");
+      // check if min length is 10
 
-    // check if min length is 3
-    if (newNotice.Heading.length < 3) {
-      alert("Heading should be atleast 3 characters long");
-      return;
-    }
-    // check if max length is 20
+      // check if max length is 20
 
-    // check if min length is 3
-    if (newNotice.writer.length < 3) {
-      alert("Writer should be atleast 3 characters long");
-      return;
+      postNotice(newNotice);
+      handleClose();
     }
-    // check if max length is 20
-
-    postNotice(newNotice);
-    handleClose();
   };
 
   // updated delete entry only for admin
