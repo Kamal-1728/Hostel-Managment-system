@@ -58,9 +58,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const Complaints = () => {
   const [open, setOpen] = React.useState(false);
   const [complaints, setComplaints] = useState([]);
-  const [title, setTitle] = useState("");
-  const [message, setMessage] = useState("");
-  const [creator, setCreator] = useState("");
+  // const [title, setTitle] = useState("");
+  // const [message, setMessage] = useState("");
+  // const [creator, setCreator] = useState("");
+
+  let title = "";
+  let message = "";
+  let creator = "";
+
   const [alert, setAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
@@ -113,15 +118,15 @@ const Complaints = () => {
   };
 
   const handleTitleChange = (e) => {
-    setTitle(e.target.value);
+    title = e.target.value;
   };
 
   const handleMessageChange = (e) => {
-    setMessage(e.target.value);
+    message = e.target.value;
   };
 
   const handleCreatorChange = (e) => {
-    setCreator(e.target.value);
+    creator = e.target.value;
   };
 
   const handleEditTitleChange = (e) => {
@@ -202,52 +207,63 @@ const Complaints = () => {
       });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newComplaint = {
       title: title,
       message: message,
       creator: creator,
     };
-    axios
-      .post(
-        "https://hostel-management-system-2l8c.onrender.com/complaints",
-        newComplaint
-      )
-      .then((res) => {
-        setOpen(false);
-        setAlertMessage("Complaint added successfully");
-        setAlertType("success");
-        setAlert(true);
-        setTimeout(() => {
-          setAlert(false);
-        }, 3000);
-        axios
-          .get("https://hostel-management-system-2l8c.onrender.com/complaints")
-          .then((res) => {
-            setComplaints(res.data);
-          })
-          .catch((err) => {
-            // console.log(err);
-          });
-      })
-      .catch((err) => {
-        // console.log(err);
-        // setAlertMessage error message
-        setAlertType(err.response);
-      });
-      
+
+    // if (!newComplaint.title || !newComplaint.message || !newComplaint.creator) {
+    //   alert("Please fill all the fields");
+    //   return;
+    // }
+    const post = await fetch(
+      "https://hostel-management-system-2l8c.onrender.com/complaints",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newComplaint),
+      }
+    );
+    console.log(complaints);
+
+    setComplaints([...complaints, newComplaint]);
+
+    // axios
+    //   .post("http://localhost:5000/complaints", newComplaint)
+    setOpen(false);
+    setAlertMessage("Complaint added successfully");
+    setAlertType("success");
+    setAlert(true);
+    // axios
+    //   .get("https://hostel-management-system-2l8c.onrender.com/complaints")
+    //   .then((res) => {
+    //     setComplaints(res.data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+    setComplaints([...complaints, newComplaint]);
+    console.log(complaints);
   };
 
-  useEffect(() => {
+  const callup = () => {
     axios
       .get("https://hostel-management-system-2l8c.onrender.com/complaints")
       .then((res) => {
         setComplaints(res.data);
       })
       .catch((err) => {
-        // console.log(err);
+        console.log(err);
       });
+  };
+  useEffect(() => {
+    console.log("useEffect");
+    callup();
   }, []);
 
   const get = (keyName) => {
@@ -288,7 +304,7 @@ const Complaints = () => {
       <div className="App">
         <div className="complains_container">
           <div className="Complaints__addbtn">
-            <h1 >Complaints</h1>
+            <h1>Complaints</h1>
             <Button
               variant="contained"
               color="primary"
@@ -301,13 +317,13 @@ const Complaints = () => {
 
           <div className="row" id="myItems">
             <div className="col-sm-12 mb-3">
-              {(complaints.reverse()).map((complaint) => (
+              {complaints.reverse().map((complaint) => (
                 <div className="card complaints_card glow">
                   <div className="card-body">
                     <h5 id="complaints_title" className="card-title">
                       {complaint.title}
                     </h5>
-                    <hr id="complaints_hr"/>
+                    <hr id="complaints_hr" />
                     <p className="card-subtitle mb-2 text-muted complaints_padding">
                       {complaint.message}
                     </p>
@@ -355,15 +371,19 @@ const Complaints = () => {
               margin="dense"
               id="title"
               label="Title"
+              inputProps={{ maxLength: 100, minLength: 4 }}
               type="text"
               fullWidth
+              required
               onChange={handleTitleChange}
             />
             <TextField
               margin="dense"
               id="message"
               label="Message"
+              inputProps={{ maxLength: 500, minLength: 4 }}
               type="text"
+              required
               fullWidth
               onChange={handleMessageChange}
             />
@@ -371,7 +391,9 @@ const Complaints = () => {
               margin="dense"
               id="creator"
               label="Creator"
+              inputProps={{ maxLength: 20, minLength: 4 }}
               type="text"
+              required
               fullWidth
               onChange={handleCreatorChange}
             />
@@ -401,6 +423,7 @@ const Complaints = () => {
               margin="dense"
               id="title"
               label="Title"
+              inputProps={{ maxLength: 100, minLength: 4 }}
               type="text"
               fullWidth
               value={editTitle}
@@ -410,6 +433,7 @@ const Complaints = () => {
               margin="dense"
               id="message"
               label="Message"
+              inputProps={{ maxLength: 500, minLength: 4 }}
               type="text"
               fullWidth
               value={editMessage}
@@ -419,6 +443,7 @@ const Complaints = () => {
               margin="dense"
               id="creator"
               label="Creator"
+              inputProps={{ maxLength: 20, minLength: 4 }}
               type="text"
               fullWidth
               value={editCreator}

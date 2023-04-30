@@ -44,13 +44,16 @@ export default function LoginPage() {
   // no sign up page, we will only have sign in page that collect email, password and role
   const login = async (user) => {
     // console.log("login");
-    const res = await fetch("https://hostel-management-system-2l8c.onrender.com/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(user),
-    });
+    const res = await fetch(
+      "https://hostel-management-system-2l8c.onrender.com/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      }
+    );
     const data = await res.json();
     // console.log("hey");
 
@@ -87,13 +90,16 @@ export default function LoginPage() {
 
   const changePassword = async () => {
     // console.log("change password");
-    const res = await fetch("https://hostel-management-system-2l8c.onrender.com/login", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password, Newpassword }),
-    });
+    const res = await fetch(
+      "https://hostel-management-system-2l8c.onrender.com/login",
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password, Newpassword }),
+      }
+    );
     const data = await res.json();
     // console.log("hy", data);
     if (res.status != 200 || !data) {
@@ -159,7 +165,7 @@ export default function LoginPage() {
     <div className="align">
       <div className="grid">
         <form
-          action="https://localhost:5000/post"
+          action="https://hostel-management-system-2l8c.onrender.com/post"
           method="POST"
           className="form login"
           onSubmit={handleSubmit}
@@ -176,6 +182,7 @@ export default function LoginPage() {
               id="login__username"
               type="text"
               name="username"
+              maxLength="100"
               className="form__input"
               placeholder="Email"
               required=""
@@ -197,6 +204,7 @@ export default function LoginPage() {
               name="password"
               className="form__input"
               placeholder="Password"
+              maxLength="100"
               required=""
               onChange={(data) => {
                 setPassword(data.target.value);
@@ -219,6 +227,7 @@ export default function LoginPage() {
                   name="password"
                   className="form__input"
                   placeholder="New Password"
+                  minLength="4"
                   required=""
                   onChange={(data) => {
                     setNewPassword(data.target.value);

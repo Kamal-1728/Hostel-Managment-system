@@ -14,7 +14,6 @@ import { TextField } from "@mui/material";
 import { useCookies } from "react-cookie";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
-
 function NoticeBoard() {
   const [examples, setExamples] = useState([]);
   const [cookies, setCookie] = useCookies(["user"]);
@@ -102,7 +101,10 @@ function NoticeBoard() {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-
+    if (!Heading || !content || !writer) {
+      alert("Please fill all the fields");
+      return;
+    }
     if (!editing) {
       const newExamples = [...examples];
       // newNotice.id = newExamples.length + 1;
@@ -218,12 +220,13 @@ function NoticeBoard() {
       <html>
         <body>
           <div className="inBlock notices__body">
-          <h2>Notices</h2>
+            <h2>Notices</h2>
             <h3 className="searchBlock">
               <span>Search Notices</span>
               <input
                 type="text"
                 placeholder="Search notices..."
+                maxLength="100"
                 class="form-control search-input"
                 value={searchTerm}
                 onChange={handleSearchChange}
@@ -267,7 +270,7 @@ function NoticeBoard() {
             <br></br>
 
             <div className="accordion" id="accordionExample">
-              {(filteredExamples.reverse()).map((example, index) => {
+              {filteredExamples.reverse().map((example, index) => {
                 return (
                   // <div key={index} className="accordion-item">
                   //   <h2 className="accordion-header">
@@ -326,15 +329,15 @@ function NoticeBoard() {
                       <h7 className="noticesalign__left">{example.writer}</h7>
                       <div className="deleteButton">
                         <br></br>
-                      {role == "admin" && (
-                      <Button 
+                        {role == "admin" && (
+                          <Button
                             variant="contained"
                             onClick={() => deleteEntry(example._id)}
                             sx={{ opacity: "100%" }}
                           >
                             <DeleteOutlineOutlinedIcon /> Delete
-                        </Button>
-                      )}
+                          </Button>
+                        )}
                       </div>
                     </div>
                   </>
@@ -381,9 +384,13 @@ function NoticeBoard() {
             </form> */}
 
             {role == "admin" && (
-            <button type="submit" className="addNew" onClick={handleClickOpen}>
-              Add New Notice
-            </button>
+              <button
+                type="submit"
+                className="addNew"
+                onClick={handleClickOpen}
+              >
+                Add New Notice
+              </button>
             )}
             <Dialog
               open={open}
@@ -401,24 +408,30 @@ function NoticeBoard() {
                   margin="dense"
                   id="Heading"
                   label="Heading"
+                  inputProps={{ maxLength: 100, minLength: 4 }}
                   type="text"
                   fullWidth
                   onChange={handleHeadingChange}
+                  required
                 />
                 <TextField
                   margin="dense"
                   id="content"
-                  label="content"
+                  label="Content"
                   type="text"
+                  inputProps={{ maxLength: 500, minLength: 4 }}
                   fullWidth
+                  required
                   onChange={handlecontentChange}
                 />
                 <TextField
                   margin="dense"
                   id="writer"
-                  label="writer"
+                  label="Writer"
+                  inputProps={{ maxLength: 20, minLength: 4 }}
                   type="text"
                   fullWidth
+                  required
                   onChange={handlewriterChange}
                 />
               </DialogContent>

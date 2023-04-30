@@ -50,11 +50,13 @@ export default function CourierPage() {
   };
 
   // form inputs; will be integrated with backend using post and get methods later
-  const [couriedID, setcourierID] = useState("");
+  // const [couriedID, setcourierID] = useState("");
   const [filter, setFilter] = useState([]);
-  const [name, setName] = useState("");
-  const [room, setRoom] = useState("");
-
+  // const [name, setName] = useState("");
+  // const [room, setRoom] = useState("");
+  let couriedID = "";
+  let name = "";
+  let room = "";
   const Newitem = {
     student_name: "",
     couriedID: "",
@@ -150,8 +152,9 @@ export default function CourierPage() {
                 <span>Filter Table Data</span>
                 <input
                   type="search"
-                  placeholder="Search Name..."
+                  placeholder="Search student Name..."
                   class="form-control search-input"
+                  maxLength="100"
                   data-table="students-list"
                   onChange={(e) => requestSearch(e.target.value)}
                 />
@@ -170,8 +173,11 @@ export default function CourierPage() {
                     Student name:
                     <input
                       type="text"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
+                      // value={name}
+                      maxLength="100"
+                      onChange={(e) => {
+                        name = e.target.value;
+                      }}
                       class="ipBox"
                     />
                   </label>
@@ -179,8 +185,11 @@ export default function CourierPage() {
                     Room Number:
                     <input
                       type="text"
-                      value={room}
-                      onChange={(e) => setRoom(e.target.value)}
+                      // value={room}
+                      maxLength="100"
+                      onChange={(e) => {
+                        room = e.target.value;
+                      }}
                       class="ipBox"
                     />
                   </label>
@@ -188,8 +197,11 @@ export default function CourierPage() {
                     Courier ID:
                     <input
                       type="text"
-                      value={couriedID}
-                      onChange={(e) => setcourierID(e.target.value)}
+                      // value={couriedID}
+                      maxLength="20"
+                      onChange={(e) => {
+                        couriedID = e.target.value;
+                      }}
                       class="ipBox"
                     />
                   </label>
@@ -212,7 +224,7 @@ export default function CourierPage() {
                 </tr>
               </thead>
               <tbody id="geeks">
-                {(filter.reverse()).map((data, index) => {
+                {filter.reverse().map((data, index) => {
                   return (
                     <tr key={index} class="data_entry">
                       <td>{index + 1}</td>
