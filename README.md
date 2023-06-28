@@ -3,6 +3,10 @@
 ## Youtube video
 https://youtu.be/1BJbZ_s5eUM
 
+## Credential to access site
+202001018@daiict.ac.in
+pw: Kk@12345
+
 ## Project Description
 An Hostel Management System is built to serve the requirements for successfuly managing the daily works in hostel including Notice Board, Couriers Page, Complaints and Lost and Found. It includes features requirements from both admin and students point of view. 
 
